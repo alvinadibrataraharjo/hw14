@@ -3,23 +3,24 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import showAlert from './alert';
 
 export default function Register () {
+  const { push } = useRouter();
     const submitForm = async (e) => {
         e.preventDefault();
-        
-        console.log(e.target[2].value, 'e target')
+
         const payload = {
           name: e.target[0].value,
           email: e.target[1].value,
           password: e.target[2].value,
         };
-
-        console.log(payload, 'payload')
+        
     
         try {
           await axios.post('/api/register', payload);
-        //   push('/login');
+          // showAlert("Data Berhasil Ditambah")
+          push('/login');
         } catch (error) {
           console.log(error);
         }
