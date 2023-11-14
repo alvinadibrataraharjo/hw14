@@ -15,14 +15,6 @@ export async function GET(req, res) {
 
 export async function POST(req, res) {
   const data = await req.formData();
-  const file = data.get('image');
-
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
-  const imagePath = path.join('images', file.name);
-  const storeImage = path.join(process.cwd(), 'public', imagePath);
-
-  await writeFile(storeImage, buffer);
 
   try {
     const book = await prisma.book.create({
@@ -31,8 +23,7 @@ export async function POST(req, res) {
         author: data.get('author'),
         publisher: data.get('publisher'),
         year: parseInt(data.get('year')),
-        pages: parseInt(data.get('pages')),
-        image: imagePath,
+        pages: parseInt(data.get('pages'))
       },
     });
     return NextResponse.json(book);
